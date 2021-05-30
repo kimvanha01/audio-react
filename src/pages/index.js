@@ -6,22 +6,24 @@ import axios from 'axios';
 
 export default class Index extends Component {
     state = {
-        employees: [],
+        books: [],
         toDashboard: false,
         isLoading: false
     };
 
     constructor(props) {
         super(props);
-        this.url = 'https://gowtham-rest-api-crud.herokuapp.com/employees';
+        // this.url = 'https://gowtham-rest-api-crud.herokuapp.com/employees';
+        this.url = 'http://40.90.168.71:8080/book/list';
         this.token = localStorage.getItem('token');
     }
 
     componentDidMount() {
-        axios.get(this.url , { params: { token: this.token}})
+        axios.get(this.url) // , { params: { token: this.token}}
             .then(response => {
-                const employees = response.data.data.employees;
-                this.setState({ employees });
+                const books = response.data;
+                console.log(books);
+                this.setState({ books });
             })
             .catch(error => {
                 this.setState({ toDashboard: true });
@@ -56,41 +58,42 @@ export default class Index extends Component {
                                 <li className="breadcrumb-item">
                                     <Link to={'/dashboard'} >Dashboard</Link>
                                 </li>
-                                <li className="breadcrumb-item active">CRUD App</li>
-                                <li className="ml-auto"><Link to={'add'}>Add Employee</Link></li>
+                                <li className="breadcrumb-item active">AUCMS App</li>
+                                <li className="ml-auto"><Link to={'add'}>Add Book</Link></li>
                             </ol>
                             <div className="card mb-3">
                                 <div className="card-header"><i className="fas fa-table"></i>
-                                    &nbsp;&nbsp;Employees List
+                                    &nbsp;&nbsp;Books List
                                 </div>
                                 <div className="card-body">
                                     <table className="table table-bordered">
                                         <thead>
+                                            {}
                                         <tr>
                                             <th>id</th>
                                             <th>Name</th>
-                                            <th>Phone No</th>
-                                            <th>Email ID</th>
-                                            <th>Emp ID</th>
-                                            <th>Company</th>
-                                            <th>Location</th>
+                                            <th>Author</th>
+                                            <th>Cover Image</th>
+                                            <th>Status</th>
+                                            <th>Image</th>
+                                            <th>Intro</th>
                                             <th className="text-center">Action</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                            {this.state.employees.map((employees , index)=>
-                                                <tr key={employees.id}>
+                                            {this.state.books.map((book , index)=> 
+                                                <tr key={book.id}>
                                                     <td>{index + 1}</td>
-                                                    <td>{employees.name}</td>
-                                                    <td>{employees.phone}</td>
-                                                    <td>{employees.emp_id}</td>
-                                                    <td>{employees.email}</td>
-                                                    <td>{employees.company}</td>
-                                                    <td>{employees.location}</td>
+                                                    <td>{book.title}</td>
+                                                    <td>{book.author}</td>
+                                                    <td><img style={{width: 200}} alt={book.title} src={book.coverImage} /></td>
+                                                    <td>{book.status ? 'Active' : ''}</td>
+                                                    <td><img style={{width: 200}} alt={book.title} src={book.image} /></td>
+                                                    <td>{book.intro}</td>
                                                     <td className="text-center">
-                                                        <Link className="btn btn-sm btn-info" to={{ pathname: 'edit', search: '?id=' + employees.id }}>Edit</Link>
+                                                        <Link className="btn btn-sm btn-info" to={{ pathname: 'edit', search: '?id=' + book.id }}>Edit</Link>
                                                         &nbsp; | &nbsp;
-                                                        <button value={employees.id} className="btn btn-sm btn-danger" disabled={ index === 0  ? true : false} onClick={this.handleClickDelete} >Delete</button>
+                                                        <button value={book.id} className="btn btn-sm btn-danger" disabled={ index === 0  ? true : false} onClick={this.handleClickDelete} >Delete</button>
                                                     </td>
                                                 </tr>)
                                             }
