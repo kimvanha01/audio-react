@@ -4,25 +4,30 @@ import Sidebar from "../elements/sidebar";
 import {Link, Redirect} from 'react-router-dom';
 import axios from 'axios';
 
-export default class Index extends Component {
+export default class bookByCategory extends Component {
     state = {
         books: [],
+        categories:[],
+        id:'',
         toDashboard: false,
         isLoading: false
     };
 
     constructor(props) {
         super(props);
-        // this.url = 'https://gowtham-rest-api-crud.herokuapp.com/employees';
-        this.url = 'http://40.90.168.71:8080/book/list';
+        this.url = 'http://40.90.168.71:8080/category/book';
         this.accessToken = localStorage.getItem('accessToken');
     }
 
     componentDidMount() {
-        axios.get(this.url) // , { params: { accessToken: this.accessToken}}
+        const id = this.props.location.search[4];
+        console.log(id);
+        console.log(this.props.location);
+        axios.get('http://40.90.168.71:8080/category/book?id='+id) // , { params: { accessToken: this.accessToken}}
             .then(response => {
-                const books = response.data;
-                console.log(books);
+                const categories = response.data;
+                console.log(categories);
+                const books = categories.books;
                 this.setState({ books });
             })
             .catch(error => {
@@ -31,22 +36,22 @@ export default class Index extends Component {
             });
     }
 
-    handleClickDelete = event => {
-        axios.delete(this.url + '/' + event.target.value , { params: { accessToken: this.accessToken}})
-            .then(response => {
-                this.componentDidMount();
-                this.setState({ isLoading: true})
-            })
-            .catch( error => {
-                console.log(error.toString());
-                this.setState({ toDashboard: true });
-            });
-    };
+    // handleClickDelete = event => {
+    //     axios.delete(this.url + '/' + event.target.value , { params: { accessToken: this.accessToken}})
+    //         .then(response => {
+    //             this.componentDidMount();
+    //             this.setState({ isLoading: true})
+    //         })
+    //         .catch( error => {
+    //             console.log(error.toString());
+    //             this.setState({ toDashboard: true });
+    //         });
+    // };
 
     render() {
-        if (this.state.toDashboard === true) {
-            return <Redirect to='/' />
-        }
+        // if (this.state.toDashboard === true) {
+        //     return <Redirect to='/' />
+        // }
         return (
             <div>
                 <Header/>
@@ -81,7 +86,7 @@ export default class Index extends Component {
                                         </tr>
                                         </thead>
                                         <tbody>
-                                            {this.state.books.map((book , index)=> 
+                                            {this.state.books.map((book, index)=> 
                                                 <tr key={book.id}>
                                                     <td>{index + 1}</td>
                                                     <td>{book.title}</td>
@@ -113,6 +118,7 @@ export default class Index extends Component {
                     </div>
                 </div>
             </div>
+        
         );
     }
 }

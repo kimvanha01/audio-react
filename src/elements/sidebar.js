@@ -14,22 +14,15 @@ export default class Sidebar extends Component {
                         <Link className="nav-link dropdown-toggle" to={''}  id="pagesDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i className="fas fa-fw fa-folder"></i>
-                            <span>&nbsp;Pages</span>
+                            <span>&nbsp;Book Manage</span>
                         </Link>
                         <div className="dropdown-menu" aria-labelledby="pagesDropdown">
-                            <h6 className="dropdown-header">Login Screens:</h6>
-                            {/*<a className="dropdown-item" href="login.html">Login</a>*/}
-                            {/*<a className="dropdown-item" href="register.html">Register</a>*/}
-                            {/*<a className="dropdown-item" href="forgot-password.html">Forgot Password</a>*/}
+                            <h6 className="dropdown-header">Category</h6>
+                            <a className="dropdown-item" href="/category">List Category</a>
                             <div className="dropdown-divider"></div>
-                            <h6 className="dropdown-header">Other Pages:</h6>
-                            {/*<a className="dropdown-item" href="404.html">404 Page</a>*/}
-                            {/*<a className="dropdown-item" href="blank.html">Blank Page</a>*/}
+                            <h6 className="dropdown-header">Book</h6>
+                            <a className="dropdown-item" href="/book/list">List Book</a>
                         </div>
-                    </li>
-                    <li className="nav-item">
-                        <Link to={'/index'} className="nav-link"><i className="fas fa-fw fa-chart-area"></i>
-                            <span>&nbsp;CRUD App</span></Link>
                     </li>
                     <li className="nav-item">
                         <Link to={'/fileupload'} className="nav-link"><i className="fas fa-fw fa-file-archive"></i>

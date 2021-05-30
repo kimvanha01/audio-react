@@ -4,11 +4,11 @@ import {Link, Redirect} from 'react-router-dom';
 import Header from "../elements/header";
 import Sidebar from "../elements/sidebar";
 
-export default class EditPage extends Component {
+export default class EditBook extends Component {
 
     constructor(props) {
         super(props);
-        this.url = 'https://gowtham-rest-api-crud.herokuapp.com/employees';
+        this.url = 'http://40.90.168.71:8080/book';
         this.token = localStorage.getItem('token');
     }
 
@@ -19,17 +19,18 @@ export default class EditPage extends Component {
     };
 
     componentDidMount() {
-        const id = this.props.location.search[4];
-        axios.get(this.url + '/'  + id, { params: { token: this.token}})
+        const id = this.props.location.search[1];
+        axios.get(this.url + '?'  + id, { params: { token: this.token}})
             .then(response => {
-                const emp = response.data.employee;
-                this.setState({id: emp.id });
-                document.getElementById('inputName').value = emp.name;
-                document.getElementById('inputPhone').value = emp.phone;
-                document.getElementById('inputEmail').value = emp.email;
-                document.getElementById('inputLoca').value = emp.location;
-                document.getElementById('inputEmpId').value = emp.emp_id;
-                document.getElementById('inputComp').value = emp.company;
+                const book = response.data.book;
+                this.setState({id: book.id });
+                document.getElementById('title').value = book.title;
+                document.getElementById('author').value = book.author;
+                document.getElementById('imageCover').value = book.imageCover;
+                document.getElementById('status').value = book.status;
+                document.getElementById('image').value = book.image;
+                document.getElementById('mp3').value = book.mp3;
+                document.getElementById('intro').value = book.intro;
             })
             .catch(error => {
                 this.setState({ toDashboard: true });
@@ -42,14 +43,15 @@ export default class EditPage extends Component {
         event.preventDefault();
         this.setState({isLoading: true});
         const token = localStorage.getItem('token');
-        const url = 'https://gowtham-rest-api-crud.herokuapp.com/employees/'+ this.state.id;
-        const name = document.getElementById('inputName').value;
-        const phone = document.getElementById('inputPhone').value;
-        const email = document.getElementById('inputEmail').value;
-        const location = document.getElementById('inputLoca').value;
-        const empid = document.getElementById('inputEmpId').value;
-        const company = document.getElementById('inputComp').value;
-        axios.put(url, { name: name, phone: phone, email:email, location:location, emp_id:empid, company:company, token:token })
+        const url = 'http://40.90.168.71:8080/book?'+ this.state.id;
+        const title = document.getElementById('title').value;
+        const author = document.getElementById('author').value;
+        const imageCover = document.getElementById('imageCover').value;
+        const status = document.getElementById('status').value;
+        const image = document.getElementById('image').value;
+        const mp3 = document.getElementById('mp3').value;
+        const intro = document.getElementById('intro').value;
+        axios.put(url, { title:title, author:author, imageCover:imageCover, status:status, image:image, mp3:mp3, intro:intro, token:token })
             .then(result => {
                 if (result.data.status) {
                     this.setState({redirect: true, isLoading: false})
@@ -88,21 +90,21 @@ export default class EditPage extends Component {
                         </div>
                         <div className="container-fluid">
                             <div className="card mx-auto">
-                                <div className="card-header">Employee Edit</div>
+                                <div className="card-header">Edit Book</div>
                                 <div className="card-body">
                                     <form onSubmit={this.handleSubmit}>
                                         <div className="form-group">
                                             <div className="form-row">
                                                 <div className="col-md-6">
                                                     <div className="form-label-group">
-                                                        <input type="text" id="inputName" className="form-control" placeholder="Enter name" required="required" autoFocus="autofocus" />
-                                                        <label htmlFor="inputName">Enter name</label>
+                                                        <input type="text" id="title" className="form-control" placeholder="Enter title" required="required" autoFocus="autofocus" />
+                                                        <label htmlFor="inputTitle">Enter Title</label>
                                                     </div>
                                                 </div>
                                                 <div className="col-md-6">
                                                     <div className="form-label-group">
-                                                        <input type="number" id="inputPhone" className="form-control" placeholder="Enter Phone" required="required" />
-                                                        <label htmlFor="inputPhone">Enter Phone</label>
+                                                        <input type="text" id="author" className="form-control" placeholder="Enter Author" required="required" />
+                                                        <label htmlFor="inputAuthor">Enter Author</label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -111,14 +113,18 @@ export default class EditPage extends Component {
                                             <div className="form-row">
                                                 <div className="col-md-6">
                                                     <div className="form-label-group">
-                                                        <input type="email" id="inputEmail" className="form-control" placeholder="Email address" required="required" />
-                                                        <label htmlFor="inputEmail">Email address</label>
+                                                    <input type="file" name="file" id="imageCover" />
+                                                        <label htmlFor="imageCover">Image Cover</label>
                                                     </div>
                                                 </div>
                                                 <div className="col-md-6">
-                                                    <div className="form-label-group">
-                                                        <input type="text" id="inputComp" className="form-control" placeholder="Enter Company" required="required"/>
-                                                        <label htmlFor="inputComp">Enter Company</label>
+                                                <div className="form-label-group">
+                                                    <label htmlFor="status">Select</label>
+                                                        <input type="select" name="select" id="status">
+                                                        <option>1</option>
+                                                        <option>2</option>
+                                                        <option>3</option>
+                                                        </input>
                                                     </div>
                                                 </div>
                                             </div>
@@ -127,19 +133,29 @@ export default class EditPage extends Component {
                                             <div className="form-row">
                                                 <div className="col-md-6">
                                                     <div className="form-label-group">
-                                                        <input type="number" id="inputEmpId" className="form-control" placeholder="Enter Emp ID" required="required" />
-                                                        <label htmlFor="inputEmpId">Enter Emp ID</label>
+                                                    <input type="file" name="file" id="image" />
+                                                        <label htmlFor="inputbookId">Image</label>
                                                     </div>
                                                 </div>
                                                 <div className="col-md-6">
                                                     <div className="form-label-group">
-                                                        <input type="text" id="inputLoca" className="form-control" placeholder="Enter Location" required="required"/>
-                                                        <label htmlFor="inputLoca">Enter Location</label>
+                                                    
+                                                        <label htmlFor="inputLoca">Audio mp3</label>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <button className="btn btn-primary btn-block" type="submit" disabled={this.state.isLoading ? true : false}>Update Employee &nbsp;&nbsp;&nbsp;
+                                        <div className="form-group">
+                                            <div className="form-row">
+                                                <div className="col-md-6">
+                                                    <div className="form-label-group">
+                                                        <input type="textarea" id="intro" className="form-control" placeholder="Enter Intro" required="required" />
+                                                        <label htmlFor="inputIntro">Intro</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button className="btn btn-primary btn-block" type="submit" disabled={this.state.isLoading ? true : false}>Update Book &nbsp;&nbsp;&nbsp;
                                             {isLoading ? (
                                                 <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                             ) : (
@@ -155,7 +171,7 @@ export default class EditPage extends Component {
                         <footer className="sticky-footer">
                             <div className="container my-auto">
                                 <div className="copyright text-center my-auto">
-                                    <span>Copyright © Your Website 2019</span>
+                                    <span>Book Audio</span>
                                 </div>
                             </div>
                         </footer>
