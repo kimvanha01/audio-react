@@ -8,7 +8,7 @@
 
 ## How to setup project
 ``` 
-1. git clone https://github.com/gowthamand/react-login-register-crud
+1. git clone 
 
 2. npm install
 
