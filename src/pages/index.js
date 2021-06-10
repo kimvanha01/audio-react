@@ -13,13 +13,13 @@ export default class Index extends Component {
 
     constructor(props) {
         super(props);
-        // this.url = 'https://gowtham-rest-api-crud.herokuapp.com/employees';
-        this.url = 'http://40.90.168.71:8080/book/list';
+
+        this.url = 'http://localhost:8080/book/list';
         this.accessToken = localStorage.getItem('accessToken');
     }
 
     componentDidMount() {
-        axios.get(this.url) // , { params: { accessToken: this.accessToken}}
+        axios.get(this.url) 
             .then(response => {
                 const books = response.data;
                 console.log(books);
@@ -70,12 +70,12 @@ export default class Index extends Component {
                                         <thead>
                                             {}
                                         <tr>
-                                            <th>id</th>
+                                            <th>No.</th>
                                             <th>Name</th>
                                             <th>Author</th>
                                             <th>Cover Image</th>
                                             <th>Status</th>
-                                            <th>Image</th>
+                                            {/* <th>Image</th> */}
                                             <th>Intro</th>
                                             <th className="text-center">Action</th>
                                         </tr>
@@ -88,10 +88,10 @@ export default class Index extends Component {
                                                     <td>{book.author}</td>
                                                     <td><img style={{width: 200}} alt={book.title} src={book.coverImage} /></td>
                                                     <td>{book.status ? 'Active' : ''}</td>
-                                                    <td><img style={{width: 200}} alt={book.title} src={book.image} /></td>
+                                                    {/* <td><img style={{width: 200}} alt={book.title} src={book.image} /></td> */}
                                                     <td>{book.intro}</td>
                                                     <td className="text-center">
-                                                        <Link className="btn btn-sm btn-info" to={{ pathname: 'edit', search: '?id=' + book.id }}>Edit</Link>
+                                                        <Link className="btn btn-sm btn-info" to={{ pathname: '/book', search: '?id=' + book.id }}>Edit</Link>
                                                         &nbsp; | &nbsp;
                                                         <button value={book.id} className="btn btn-sm btn-danger" disabled={ index === 0  ? true : false} onClick={this.handleClickDelete} >Delete</button>
                                                     </td>

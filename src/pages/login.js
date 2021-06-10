@@ -6,7 +6,7 @@ import TitleComponent from "./title";
 export default class Login extends Component {
 
     state = {
-        email: '',
+        username: '',
         password: '',
         redirect: false,
         authError: false,
@@ -14,48 +14,46 @@ export default class Login extends Component {
         // location: {},
     };
 
-    handleEmailChange = event => {
-        this.setState({email: event.target.value});
+    handleUsernameChange = event => {
+        this.setState({username: event.target.value});
     };
     handlePwdChange = event => {
         this.setState({password: event.target.value});
     };
 
-    handleSubmit = event => {
+    handleSubmit =  async (event) => {
         event.preventDefault();
         this.setState({isLoading: true});
-        const url = 'https://gowtham-rest-api-crud.herokuapp.com/login';
-        const email = this.state.email;
+        const url = 'http://localhost:8080/api/v1/users/log-in';
+        const username = this.state.username;
         const password = this.state.password;
         let bodyFormData = new FormData();
-        bodyFormData.set('email', email);
-        bodyFormData.set('password', password);
-        axios.post(url, bodyFormData)
-            .then(result => {
-                if (result.data.status) {
-                    localStorage.setItem('token', result.data.token);
+        bodyFormData.append('username', username);
+        bodyFormData.append('password', password);
+
+        console.log(username, password);
+        const config = {     
+            headers: { 'content-type': 'application/json' }
+        }    
+        
+        axios.post(url, { username: this.state.username , password: this.state.password }, config)
+            .then( res => {
+                console.log(res);
+
+                if(res.data.data){
+                    localStorage.setItem('token', res.data.data.accessToken);
                     this.setState({redirect: true, isLoading: false});
                     localStorage.setItem('isLoggedIn', true);
                 }
-            })
+            }
+
+            )
             .catch(error => {
+                console.log('and here..')
                 console.log(error);
                 this.setState({authError: true, isLoading: false});
             });
     };
-
-    // componentDidMount() {
-    //     const url = 'https://freegeoip.app/json/';
-    //     axios.get(url)
-    //         .then(response => {
-    //             const location = response.data;
-    //             this.setState({ location });
-    //         }) 
-    //         .catch(error => {
-    //             this.setState({ toDashboard: true });
-    //             console.log(error);
-    //         });
-    // }
 
     renderRedirect = () => {
         if (this.state.redirect) {
@@ -70,22 +68,15 @@ export default class Login extends Component {
                 <TitleComponent title="AUCMS Login "></TitleComponent>
                 <div className="card card-login mx-auto mt-5">
                     <div className="card-header">Login</div>
-                    {/* <div className="text-center">
-                        <span>IP : <b>{this.state.location.ip}</b></span>, &nbsp;
-                        <span>Country : <b>{this.state.location.country_name}</b></span>, &nbsp;
-                        <span>Region : <b>{this.state.location.region_name}</b></span>, &nbsp;
-                        <span>City : <b>{this.state.location.city}</b></span>, &nbsp;
-                        <span>PIN : <b>{this.state.location.zip_code}</b></span>, &nbsp;
-                        <span>Zone : <b>{this.state.location.time_zone}</b></span>
-                    </div> */}
+
                     <div className="card-body">
                         <form onSubmit={this.handleSubmit}>
                             <div className="form-group">
                                 <div className="form-label-group">
-                                    <input className={"form-control " + (this.state.authError ? 'is-invalid' : '')} id="inputEmail" placeholder="Email address" type="text" name="email" onChange={this.handleEmailChange} autoFocus required/>
-                                    <label htmlFor="inputEmail">Email address</label>
+                                    <input className={"form-control " + (this.state.authError ? 'is-invalid' : '')} id="inputUsername" placeholder="Username address" type="text" name="username" onChange={this.handleUsernameChange} autoFocus required/>
+                                    <label htmlFor="inputUsername">Username</label>
                                     <div className="invalid-feedback">
-                                        Please provide a valid Email.
+                                        Please provide a valid Username.
                                     </div>
                                 </div>
                             </div>
@@ -116,10 +107,10 @@ export default class Login extends Component {
                             </div>
                             <div className="form-group">
                                 <div className="form-group">
-                                    <b>email:</b> gowthaman.nkl1@gmail.com
+                                    <b>Username:</b> admin
                                 </div>
                                 <div className="form-group">
-                                    <b>password :</b> password
+                                    <b>password :</b> Namdinh2110@
                                 </div>
                             </div>
                         </form>

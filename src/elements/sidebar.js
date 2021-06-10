@@ -10,6 +10,10 @@ export default class Sidebar extends Component {
                         <Link to={'/dashboard'} className="nav-link"><i className="fas fa-fw fa-tachometer-alt"></i>
                             <span>&nbsp;Dashboard</span></Link>
                     </li>
+                    <li className="nav-item">
+                        <Link to={'/users/list'} className="nav-link"><i className="fas fa-fw fa-user"></i>
+                            <span>&nbsp;User Manage</span></Link>
+                    </li>
                     <li className="nav-item dropdown">
                         <Link className="nav-link dropdown-toggle" to={''}  id="pagesDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

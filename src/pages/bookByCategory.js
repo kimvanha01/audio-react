@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Header from "../elements/header";
 import Sidebar from "../elements/sidebar";
-import {Link, Redirect} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import axios from 'axios';
 
 export default class bookByCategory extends Component {
@@ -15,7 +15,7 @@ export default class bookByCategory extends Component {
 
     constructor(props) {
         super(props);
-        this.url = 'http://40.90.168.71:8080/category/book';
+        this.url = 'http://localhost:8080/category/book';
         this.accessToken = localStorage.getItem('accessToken');
     }
 
@@ -23,7 +23,7 @@ export default class bookByCategory extends Component {
         const id = this.props.location.search[4];
         console.log(id);
         console.log(this.props.location);
-        axios.get('http://40.90.168.71:8080/category/book?id='+id) // , { params: { accessToken: this.accessToken}}
+        axios.get('http://localhost:8080/category/book?id='+id) // , { params: { accessToken: this.accessToken}}
             .then(response => {
                 const categories = response.data;
                 console.log(categories);
@@ -75,7 +75,7 @@ export default class bookByCategory extends Component {
                                         <thead>
                                             {}
                                         <tr>
-                                            <th>id</th>
+                                            <th>No.</th>
                                             <th>Name</th>
                                             <th>Author</th>
                                             <th>Cover Image</th>
@@ -96,7 +96,7 @@ export default class bookByCategory extends Component {
                                                     <td><img style={{width: 200}} alt={book.title} src={book.image} /></td>
                                                     <td>{book.intro}</td>
                                                     <td className="text-center">
-                                                        <Link className="btn btn-sm btn-info" to={{ pathname: 'edit', search: '?id=' + book.id }}>Edit</Link>
+                                                    <Link className="btn btn-sm btn-info" to={{ pathname: '/book', search: '?id=' + book.id }}>Edit</Link>
                                                         &nbsp; | &nbsp;
                                                         <button value={book.id} className="btn btn-sm btn-danger" disabled={ index === 0  ? true : false} onClick={this.handleClickDelete} >Delete</button>
                                                     </td>

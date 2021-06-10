@@ -5,36 +5,34 @@ import {Link, Redirect} from 'react-router-dom';
 export default class Register extends Component {
 
     state = {
-        name: '',
-        email: '',
+        role: 'ROLE_ADMIN',
+        username: '',
         password: '',
         redirect: false,
         authError: false,
         isLoading: false,
     };
 
-    handleEmailChange = event => {
-        this.setState({ email: event.target.value });
+    handleUsernameChange = event => {
+        this.setState({ username: event.target.value });
     };
     handlePwdChange = event => {
         this.setState({ password: event.target.value });
     };
-    handleNameChange = event => {
-        this.setState({ name: event.target.value });
-    };
+
 
     handleSubmit = event => {
         event.preventDefault();
         this.setState({isLoading: true});
-        const url = 'https://gowtham-rest-api-crud.herokuapp.com/register';
-        const email = this.state.email;
+        const url = 'http://localhost:8080/api/v1/users/sign-up';
+        const username = this.state.username;
         const password = this.state.password;
-        const name = this.state.name;
+        const role = this.state.role;
         let bodyFormData = new FormData();
-        bodyFormData.set('email', email);
-        bodyFormData.set('name', name);
+        bodyFormData.set('username', username);
+        bodyFormData.set('role', role);
         bodyFormData.set('password', password);
-        axios.post(url, bodyFormData)
+        axios.post(url, { username: this.state.username , password: this.state.password, role:this.state.role })
             .then(result => {
                 this.setState({isLoading: false});
                 if (result.data.status !== 'fail') {
@@ -65,17 +63,17 @@ export default class Register extends Component {
                         <form onSubmit={this.handleSubmit}>
                             <div className="form-group">
                                 <div className="form-label-group">
-                                    <input type="text" id="inputName" className="form-control" placeholder="name"  name="name" onChange={this.handleNameChange} required/>
-                                    <label htmlFor="inputName">Name</label>
+                                    <input type="text" id="role" className="form-control" placeholder="role"  name="role" value="ROLE_CUSTOMER" readOnly={true} required/>
+                                    <label htmlFor="role">Name</label>
                                 </div>
                             </div>
 
                             <div className="form-group">
                                 <div className="form-label-group">
-                                    <input id="inputEmail" className={"form-control " + (this.state.authError ? 'is-invalid' : '')} placeholder="Email address" type="text" name="email" onChange={this.handleEmailChange} autoFocus required/>
-                                    <label htmlFor="inputEmail">Email address</label>
+                                    <input id="inputUsername" className={"form-control " + (this.state.authError ? 'is-invalid' : '')} placeholder="Username address" type="text" name="username" onChange={this.handleUsernameChange} autoFocus required/>
+                                    <label htmlFor="inputUsername">Username address</label>
                                     <div className="invalid-feedback">
-                                        Please provide a valid Email. or Email Exis
+                                        Please provide a valid Username. or Username Exis
                                     </div>
                                 </div>
                             </div>

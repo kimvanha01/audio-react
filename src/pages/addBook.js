@@ -231,7 +231,7 @@ export default class AddPage extends Component {
                       type="submit"
                       disabled={this.state.isLoading ? true : false}
                     >
-                      Add Employee &nbsp;&nbsp;&nbsp;
+                      Upload Book &nbsp;&nbsp;&nbsp;
                       {isLoading ? (
                         <span
                           className="spinner-border spinner-border-sm"

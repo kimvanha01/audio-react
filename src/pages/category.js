@@ -16,12 +16,12 @@ export default class Category extends Component {
     constructor(props) {
         super(props);
         // this.url = 'https://gowtham-rest-api-crud.herokuapp.com/employees';
-        this.url = 'http://40.90.168.71:8080/category/list';
+        this.url = 'http://localhost:8080/category/list';
         this.accessToken = localStorage.getItem('accessToken');
     }
 
     componentDidMount() {
-        axios.get(this.url) // , { params: { accessToken: this.accessToken}}
+        axios.get(this.url) 
             .then(response => {
                 const categories = response.data;
                 console.log(categories);
