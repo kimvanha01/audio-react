@@ -10,9 +10,9 @@ export default class AddPage extends Component {
     title: "",
     author: "",
     intro: "",
-    coverImage: null,
-    faceBookImage: null,
-    audioMp3: null,
+    coverImage: undefined,
+    faceBookImage: undefined,
+    audioMp3: undefined,
     redirect: false,
     toDashboard: false,
     isLoading: false,
@@ -48,35 +48,46 @@ export default class AddPage extends Component {
       author: this.state.author,
       intro: this.state.intro,
     };
-    let bodyFormData = new FormData();
-    bodyFormData.set("coverImage", this.state.coverImage);
-    bodyFormData.set("faceBookImage", this.state.faceBookImage);
-    bodyFormData.set("audioMp3", this.state.audioMp3);
-    bodyFormData.set("book", JSON.stringify(book));
+
+    const formData = new FormData();
+    formData.append('book', JSON.stringify(book));
+    formData.append('coverImage', this.state.coverImage);
+    formData.append('faceBookImage', this.state.faceBookImage);
+    formData.append('audioMp3', this.state.audioMp3);
+
+    const config = {
+      headers: { "content-type": "multipart/form-data" },
+    };
 
     axios
-      .post(url, bodyFormData)
+      .post(url, formData, config)
       .then((result) => {
-        if (result.data.status) {
+        this.setState({ isLoading: false });
+        console.log(result.data);
+        if (result.data.errorCode === "200") {
+          alert("Upload Book Successfully");
           this.setState({ redirect: true, isLoading: false });
+        } else {
+          this.setState({ toDashboard: true });
+          alert("Wrong");
         }
       })
       .catch((error) => {
         this.setState({ toDashboard: true });
-        console.log(error);
+        alert(error);
       });
   };
 
   renderRedirect = () => {
     if (this.state.redirect) {
-      return <Redirect to="/dashboard" />;
+      return <Redirect to="/book/list" />;
     }
   };
 
   render() {
     const isLoading = this.state.isLoading;
     if (this.state.toDashboard === true) {
-      return <Redirect to="/" />;
+      // return <Redirect to="/dashboard" />;
     }
     return (
       <div>

@@ -30,7 +30,7 @@ export default class Login extends Component {
         let bodyFormData = new FormData();
         bodyFormData.append('username', username);
         bodyFormData.append('password', password);
-
+        
         console.log(username, password);
         const config = {     
             headers: { 'content-type': 'application/json' }
